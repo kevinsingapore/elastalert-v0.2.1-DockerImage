@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: elastalert
+  namespace: cj-ops
+  labels:
+    app: elastalert
+spec:
+  nodeSelector:
+    kubernetes.io/hostname: kvm249
+  containers:
+  - name: elastalert
+    image: harbor.example.com/devops/elastalert:v0.2.1
+    imagePullPolicy: IfNotPresent
+    ports:
+    - containerPort: 3030
+    volumeMounts:
+    - name: timezone
+      mountPath: /etc/timezone
+      subPath: timezone
+      readOnly: true
+    - name: localtime
+      mountPath: /etc/localtime
+      readOnly: true
+    - name: config
+      mountPath: /home/elastalert/config.yaml
+      subPath: config.yaml
+      readOnly: true
+    - name: rules
+      mountPath: /home/elastalert/rules
+      readOnly: true
+    - name: smtp-auth-file
+      mountPath: /home/elastalert/smtp-auth-file.yaml
+      subPath: smtp-auth-file.yaml
+      readOnly: true
+  volumes:
+  - name: timezone
+    configMap: 
+      name: timezone
+  - name: localtime
+    hostPath:
+      path: /usr/share/zoneinfo/Asia/Shanghai
+  - name: config
+    configMap:
+      name: elastalert-config
+  - name: rules
+    configMap:
+      name: elastalert-rules
+  - name: smtp-auth-file
+    configMap:
+      name: elastalert-smtp-auth-file

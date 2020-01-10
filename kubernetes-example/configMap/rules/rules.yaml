@@ -63,4 +63,4 @@ alert:
 # (required, email specific)
 # a list of email addresses to send alerts to
 email:
-- "xxx@examle.com"
+- "xxx@example.com"

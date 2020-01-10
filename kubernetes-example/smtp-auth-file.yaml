@@ -1,0 +1,5 @@
+#邮箱用户名
+user: system-monitor@examle.com 
+#不是邮箱密码，是设置的SMTP密码
+password: password
+

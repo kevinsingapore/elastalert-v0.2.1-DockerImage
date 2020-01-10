@@ -1,0 +1,66 @@
+# Alert when the rate of events exceeds a threshold
+
+# (Optional)
+# Elasticsearch host
+es_host: xx.xx.xx.xx
+
+# (Optional)
+# Elasticsearch port
+es_port: 9200
+
+# (OptionaL) Connect with SSL to Elasticsearch
+#use_ssl: True
+
+# (Optional) basic-auth username and password for Elasticsearch
+es_username: user
+es_password: password
+
+# (Required)
+# Rule name, must be unique
+name: log-test-xxx-201912
+
+# (Required)
+# Type of alert.
+# the frequency rule type alerts when num_events events occur with timeframe time
+type: frequency
+
+# (Required)
+# Index to search, wildcard supported
+index: log-test-xxx-201912*
+
+# (Required, frequency specific)
+# Alert when this many documents matching the query occur within a timeframe
+num_events: 50
+
+# (Required, frequency specific)
+# num_events must occur within this amount of time to trigger an alert
+timeframe:
+  hours: 4
+
+# (Required)
+# A list of Elasticsearch filters used for find events
+# These filters are joined with AND and nested in a filtered query
+# For more info: http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl.html
+filter:
+- query:
+   query_string:
+     query: "level:DEBUG"
+
+#SMTP configuration
+smtp_host: smtp.example.com
+smtp_port: 25
+
+#SMTP auth
+smtp_auth_file: /home/elastalert/smtp-auth-file.yaml
+email_reply_to: system-monitor@example.com
+from_addr: system-monitor@example.com
+
+# (Required)
+# The alert is use when a match is found
+alert:
+- "email"
+
+# (required, email specific)
+# a list of email addresses to send alerts to
+email:
+- "xxx@examle.com"
